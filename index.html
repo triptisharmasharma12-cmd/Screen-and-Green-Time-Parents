@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 
 <head>
 
@@ -7,6 +7,10 @@
 
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <title>Measures of Active Screen Time - Parents Form</title>
 
@@ -23,7 +27,7 @@ content="width=device-width, initial-scale=1.0">
 
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:"Noto Sans Devanagari",Arial,Helvetica,sans-serif;
   background:linear-gradient(135deg,#eaf3ff,#f7fbff);
   color:#1f2937;
   min-height:100vh;
@@ -886,11 +890,32 @@ ${x.label}
    ========================================================= */
 function greenImage(file, alt="Green Time question image"){
   const encoded = encodeURI(file);
+  const baseName = file.split("/").pop();
+  const stem = baseName.replace(/\\.[^.]+$/, "");
+  const candidates = [
+    "images/" + baseName,
+    baseName,
+    "images/" + stem.toLowerCase() + ".png",
+    stem.toLowerCase() + ".png",
+    "images/" + stem + ".PNG",
+    stem + ".PNG",
+    "images/" + stem + ".jpg",
+    stem + ".jpg",
+    "images/" + stem + ".jpeg",
+    stem + ".jpeg"
+  ];
   return `
     <img class="green-time-image"
-         src="images/${encoded}"
+         src="${encodeURI(candidates[0])}"
          alt="${alt}"
-         onerror="this.onerror=null;this.src='${encoded}';">
+         data-image-candidates='${JSON.stringify(candidates)}'
+         onerror="(function(img){
+           const list=JSON.parse(img.dataset.imageCandidates || '[]');
+           const next=(Number(img.dataset.imageTry || 0))+1;
+           img.dataset.imageTry=next;
+           if(next < list.length){img.src=encodeURI(list[next]);}
+           else{img.style.display='none';}
+         })(this);">
   `;
 }
 
@@ -3404,8 +3429,8 @@ const introHTML=`
 
 <h1>
 
-Measures for Active Screen Time /
-सक्रिय स्क्रीन टाइम का मापन
+Measures for Active Screen Time and Green Time /
+सक्रिय स्क्रीन टाइम और ग्रीन टाइम का मापन
 
 </h1>
 
@@ -3465,10 +3490,7 @@ Purpose / उद्देश्य
 
 <p>
 
-This form is designed to assess your child’s
-<strong>screen time</strong>, including the frequency
-and duration of digital device use for recreational
-and educational purposes.
+This form is designed to understand how much time your child spends using digital screens and participating in outdoor and other screen-free activities. It includes activities related to both entertainment and education.
 
 The information collected will be used solely for
 academic research purposes.
@@ -3478,14 +3500,9 @@ academic research purposes.
 
 <p>
 
-यह प्रपत्र आपके बच्चे के
-<strong>स्क्रीन टाइम</strong> का आकलन करने के लिए
-तैयार किया गया है, जिसमें मनोरंजन और शैक्षिक
-उद्देश्यों के लिए डिजिटल उपकरणों के उपयोग की
-आवृत्ति और अवधि शामिल है।
+यह प्रश्नावली यह जानने के लिए बनाई गई है कि आपका बच्चा डिजिटल स्क्रीन का उपयोग करने और बाहर या बिना स्क्रीन वाली अन्य गतिविधियों में कितना समय बिताता है। इसमें मनोरंजन और पढ़ाई से जुड़ी दोनों प्रकार की गतिविधियाँ शामिल हैं।
 
-इस प्रपत्र से प्राप्त जानकारी का उपयोग केवल
-शैक्षणिक शोध उद्देश्यों के लिए किया जाएगा।
+इस प्रपत्र से प्राप्त जानकारी का उपयोग केवल शैक्षणिक शोध उद्देश्यों के लिए किया जाएगा।
 
 </p>
 
@@ -3502,41 +3519,33 @@ Instructions / निर्देश
 
 <li>
 
-Please answer each question based on your child’s
-usual screen-use pattern.
+Please answer each question based on your child’s usual screen-use habits and the time spent in outdoor and other screen-free activities.
 
 <br>
 
-कृपया प्रत्येक प्रश्न का उत्तर अपने बच्चे के
-सामान्य स्क्रीन उपयोग के तरीके को ध्यान में रखते
-हुए दें।
+कृपया प्रत्येक प्रश्न का उत्तर अपने बच्चे की डिजिटल स्क्रीन के उपयोग की आदतों और बाहर या बिना स्क्रीन वाली अन्य गतिविधियों में बिताए जाने वाले समय के आधार पर दें।
 
 </li>
 
 
 <li>
 
-Consider your child’s typical daily screen use,
-rather than an unusually high or low screen-use day.
+Please consider your child’s usual daily screen use and time spent in outdoor or other screen-free activities (green time), rather than an unusually high or low activity day.
 
 <br>
 
-अपने बच्चे के सामान्य दैनिक स्क्रीन उपयोग को
-ध्यान में रखें, न कि किसी असामान्य रूप से अधिक
-या कम स्क्रीन उपयोग वाले दिन को।
+कृपया अपने बच्चे के डिजिटल स्क्रीन के सामान्य दैनिक उपयोग और बाहर या बिना स्क्रीन वाली गतिविधियों (ग्रीन टाइम) में बिताए जाने वाले समय को ध्यान में रखते हुए उत्तर दें। किसी असामान्य रूप से अधिक या कम गतिविधि वाले दिन को आधार न बनाएँ।
 
 </li>
 
 
 <li>
 
-Include digital device use such as mobile phones,
-tablets, computers, laptops, and other digital devices.
+Include the use of digital devices such as mobile phones, tablets, computers, laptops, and other digital screens. Also include time spent in outdoor activities, playing in parks or fields, exercising, doing yoga, or participating in other screen-free activities (green time).
 
 <br>
 
-इसमें मोबाइल फ़ोन, टैबलेट, कंप्यूटर, लैपटॉप
-तथा अन्य डिजिटल उपकरणों का उपयोग शामिल करें।
+मोबाइल फोन, टैबलेट, कंप्यूटर, लैपटॉप और अन्य डिजिटल उपकरणों के उपयोग को शामिल करें। साथ ही, बाहर खेलने, पार्क या मैदान में समय बिताने, व्यायाम करने, योग करने और बिना स्क्रीन वाली अन्य गतिविधियों (ग्रीन टाइम) में बिताए गए समय को भी शामिल करें।
 
 </li>
 
@@ -3545,67 +3554,46 @@ tablets, computers, laptops, and other digital devices.
 
 <strong>
 
-For recreational screen time, include activities
-such as playing video games, cognitive games,
-actively using social media, creating or posting
-content, commenting, and watching or scrolling
-through videos and reels.
+For recreational screen time, include playing video games, using social media, creating or posting content, commenting, chatting, and watching videos or reels; for green time, include outdoor games, walking, running, cycling, gardening, yoga, meditation, exercise, dancing, and spending time in parks, fields, or natural surroundings.
 
 </strong>
 
 <br>
 
-मनोरंजन के लिए स्क्रीन उपयोग में वीडियो गेम
-खेलना, संज्ञानात्मक खेल खेलना, सोशल मीडिया का
-सक्रिय उपयोग करना, सामग्री बनाना या पोस्ट करना,
-टिप्पणी करना तथा वीडियो और रील्स देखना या
-स्क्रॉल करना शामिल करें।
+मनोरंजन के लिए स्क्रीन टाइम में वीडियो गेम खेलना, सोशल मीडिया का उपयोग करना, फोटो या वीडियो बनाना या अपलोड करना, कमेंट करना, चैट करना और वीडियो या रील्स देखना शामिल करें; ग्रीन टाइम में बाहर खेलना, पैदल चलना, दौड़ना, साइकिल चलाना, बागवानी करना, योग, ध्यान, व्यायाम, नृत्य करना और पार्क, मैदान या प्राकृतिक वातावरण में समय बिताना शामिल करें।
 
 </li>
 
 
 <li>
 
-For educational screen time, include activities
-such as online classes, studying, educational
-videos, reading, completing assignments, or other
-school-related learning activities using digital devices.
+For educational screen time, include activities such as attending online classes, studying, watching educational videos, reading, completing assignments, and other school-related learning activities using digital devices; for green time, include outdoor learning, nature walks, gardening, exploring plants and animals, and other learning activities in natural surroundings.
 
 <br>
 
-शैक्षिक स्क्रीन उपयोग में ऑनलाइन कक्षाएँ,
-पढ़ाई करना, शैक्षिक वीडियो देखना, पढ़ना,
-असाइनमेंट पूरा करना या डिजिटल उपकरणों के माध्यम
-से की जाने वाली अन्य शैक्षिक गतिविधियाँ शामिल करें।
+पढ़ाई के लिए स्क्रीन टाइम में ऑनलाइन कक्षाएँ लेना, पढ़ाई करना, शैक्षिक वीडियो देखना, पढ़ना, गृहकार्य पूरा करना और डिजिटल उपकरणों से जुड़ी अन्य शैक्षिक गतिविधियाँ शामिल करें; ग्रीन टाइम में बाहर पढ़ना, प्रकृति में घूमना, बागवानी करना, पेड़-पौधों और जानवरों के बारे में जानना तथा प्राकृतिक वातावरण में सीखने वाली अन्य गतिविधियाँ शामिल करें।
 
 </li>
 
 
 <li>
 
-Do not include time spent using digital devices
-for school activities during regular school hours,
-unless specifically asked in the question.
+Do not include time spent using digital devices for school activities during regular school hours, unless specifically asked in the question. For green time, include outdoor activities such as playing, walking, cycling, gardening, exercising, yoga, meditation, and spending time in parks, fields, or natural surroundings.
 
 <br>
 
-नियमित स्कूल समय के दौरान स्कूल की गतिविधियों
-के लिए डिजिटल उपकरणों के उपयोग का समय इसमें
-शामिल न करें, जब तक कि प्रश्न में विशेष रूप से
-न पूछा गया हो।
+जब तक किसी प्रश्न में विशेष रूप से न पूछा जाए, नियमित स्कूल के समय में स्कूल की गतिविधियों के लिए डिजिटल उपकरणों के उपयोग का समय शामिल न करें। ग्रीन टाइम में बाहर खेलना, पैदल चलना, साइकिल चलाना, बागवानी करना, व्यायाम, योग, ध्यान करना और पार्क, मैदान या प्राकृतिक वातावरण में बिताया गया समय शामिल करें।
 
 </li>
 
 
 <li>
 
-Select the response that best represents your
-child’s usual screen-use pattern.
+Select the response that best represents your child’s usual screen-use pattern and the time spent in outdoor or other screen-free activities (green time).
 
 <br>
 
-उस विकल्प का चयन करें जो आपके बच्चे के सामान्य
-स्क्रीन उपयोग को सबसे अच्छी तरह दर्शाता हो।
+वह विकल्प चुनें जो आपके बच्चे के डिजिटल स्क्रीन के सामान्य उपयोग और बाहर या बिना स्क्रीन वाली गतिविधियों (ग्रीन टाइम) में बिताए जाने वाले समय को सबसे अच्छी तरह दर्शाता है।
 
 </li>
 
