@@ -4108,33 +4108,98 @@ render();
    SUBMIT
    ========================================================= */
 
-async function submitForm(){
 
+async function submitForm() {
 
-document.getElementById("nav")
-.style.display="none";
+  // Collect answers from the final questionnaire page
+  collect();
 
+  const nav = document.getElementById("nav");
+  const app = document.getElementById("app");
 
-document.getElementById("app")
-.innerHTML=`
+  nav.style.display = "none";
 
-<div class="success">
+  app.innerHTML = `
+    <div class="success">
+      <h1>Submitting... / जमा किया जा रहा है...</h1>
+      <p>Please wait.</p>
+    </div>
+  `;
 
-<h1>
+  // Generate timestamp
+  const now = new Date();
 
-Submitting… / जमा किया जा रहा है…
+  const timestamp =
+    String(now.getDate()).padStart(2, "0") + "-" +
+    ["Jan","Feb","Mar","Apr","May","Jun",
+     "Jul","Aug","Sep","Oct","Nov","Dec"][now.getMonth()] +
+    "-" + now.getFullYear() + " " +
+    now.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    });
 
-</h1>
+  data.submittedAt = timestamp;
 
-<p>
+  try {
 
-Please wait.
+    await fetch(SCRIPT_URL, {
 
-</p>
+      method: "POST",
 
-</div>
+      mode: "no-cors",
 
-`;
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+
+      body: JSON.stringify(data)
+
+    });
+
+    app.innerHTML = `
+      <div class="success">
+
+        <h1>Submission request sent / अनुरोध भेज दिया गया है</h1>
+
+        <p>
+          Your response has been sent to Google Sheets.
+          Please verify that it appears in the Responses sheet.
+        </p>
+
+        <p>
+          कृपया Google Sheets में अपनी प्रतिक्रिया दर्ज
+          होने की पुष्टि करें।
+        </p>
+
+      </div>
+    `;
+
+  }
+
+  catch (error) {
+
+    console.error("Submission error:", error);
+
+    nav.style.display = "flex";
+
+    app.innerHTML = `
+      <div class="success">
+
+        <h1>Submission failed / जमा नहीं हुआ</h1>
+
+        <p>
+          Please check your internet connection
+          and try again.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+}
 
 
 /* =========================================================
