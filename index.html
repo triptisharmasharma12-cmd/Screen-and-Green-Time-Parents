@@ -2614,10 +2614,32 @@ dualPurpose()
     `<p>How much time does your child spend each day doing fun activities without using a screen, such as playing outside, playing in a park or field, doing yoga, meditation, exercise, or spending time in nature? / आपका बच्चा रोज़ बिना स्क्रीन का उपयोग किए मनोरंजन के लिए कितने समय तक गतिविधियाँ करता है? जैसे बाहर खेलना, पार्क या मैदान में खेलना, योग करना, ध्यान लगाना, व्यायाम करना या प्रकृति के बीच समय बिताना?</p>
      <div class="grid">
        <div class="box"><h3>On school days / स्कूल के दिनों में</h3>
-         ${A(["1 hour","2 hours","3 hours","4 hours","More than 4 hours"].map(v=>({name:"green_time_school_day",value:v,label:v,required:true})))}
+         ${A([
+           ["0 hours","0 घंटे"],
+           ["0.5 hours","30 मिनट"],
+           ["1 hour","1 घंटा"],
+           ["1.5 hours","1 घंटा 30 मिनट"],
+           ["2 hours","2 घंटे"],
+           ["2.5 hours","2 घंटे 30 मिनट"],
+           ["3 hours","3 घंटे"],
+           ["3.5 hours","3 घंटे 30 मिनट"],
+           ["4 hours","4 घंटे"],
+           ["More than 4 hours","4 घंटे से अधिक"]
+         ].map(([en,hi])=>({name:"green_time_school_day",value:en,label:en+" / "+hi,required:true})))}
        </div>
        <div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>
-         ${A(["1 hour","2 hours","3 hours","4 hours","More than 4 hours"].map(v=>({name:"green_time_holiday",value:v,label:v,required:true})))}
+         ${A([
+           ["0 hours","0 घंटे"],
+           ["0.5 hours","30 मिनट"],
+           ["1 hour","1 घंटा"],
+           ["1.5 hours","1 घंटा 30 मिनट"],
+           ["2 hours","2 घंटे"],
+           ["2.5 hours","2 घंटे 30 मिनट"],
+           ["3 hours","3 घंटे"],
+           ["3.5 hours","3 घंटे 30 मिनट"],
+           ["4 hours","4 घंटे"],
+           ["More than 4 hours","4 घंटे से अधिक"]
+         ].map(([en,hi])=>({name:"green_time_holiday",value:en,label:en+" / "+hi,required:true})))}
        </div>
      </div>`
 },
@@ -2632,12 +2654,17 @@ dualPurpose()
     greenImage("non screen.png", "Physical activity") +
     `<p>How much physical activity does your child do after school or in the evening? For example, walking, dancing, exercising, cycling, or playing outdoor games. / आपका बच्चा स्कूल के बाद या शाम को कितनी शारीरिक गतिविधियाँ करता है? जैसे पैदल चलना, नाचना, व्यायाम करना, साइकिल चलाना या बाहर खेलना?</p>` +
     A([
-      {name:"physical_activity",value:"Not active at all, mostly sedentary",label:"Not active at all, mostly sedentary / बिल्कुल भी सक्रिय नहीं, अधिकतर समय बैठे रहते हैं",required:true},
+      {name:"physical_activity",value:"0 hours",label:"0 hours / 0 घंटे",required:true},
       {name:"physical_activity",value:"Less than 30 minutes",label:"Less than 30 minutes / 30 मिनट से कम",required:true},
-      {name:"physical_activity",value:"30–60 minutes",label:"30–60 minutes / 30–60 मिनट",required:true},
-      {name:"physical_activity",value:"1–2 hours",label:"1–2 hours / 1–2 घंटे",required:true},
-      {name:"physical_activity",value:"2–3 hours",label:"2–3 hours / 2–3 घंटे",required:true},
-      {name:"physical_activity",value:"More than 3 hours",label:"More than 3 hours / 3 घंटे से अधिक",required:true},
+      {name:"physical_activity",value:"30 minutes",label:"30 minutes / 30 मिनट",required:true},
+      {name:"physical_activity",value:"1 hour",label:"1 hour / 1 घंटा",required:true},
+      {name:"physical_activity",value:"1.5 hours",label:"1.5 hours / 1 घंटा 30 मिनट",required:true},
+      {name:"physical_activity",value:"2 hours",label:"2 hours / 2 घंटे",required:true},
+      {name:"physical_activity",value:"2.5 hours",label:"2.5 hours / 2 घंटे 30 मिनट",required:true},
+      {name:"physical_activity",value:"3 hours",label:"3 hours / 3 घंटे",required:true},
+      {name:"physical_activity",value:"3.5 hours",label:"3.5 hours / 3 घंटे 30 मिनट",required:true},
+      {name:"physical_activity",value:"4 hours",label:"4 hours / 4 घंटे",required:true},
+      {name:"physical_activity",value:"More than 4 hours",label:"More than 4 hours / 4 घंटे से अधिक",required:true},
       {name:"physical_activity",value:"Do not know / Do not want to answer",label:"Do not know / Do not want to answer / पता नहीं / उत्तर नहीं देना चाहते",required:true}
     ])
 },
@@ -2903,28 +2930,24 @@ placeholder=
 
 function opts(name){
 
-return [
+const durations = [
+  ["0 hours", "0 घंटे"],
+  ["0.5 hours", "30 मिनट"],
+  ["1 hour", "1 घंटा"],
+  ["1.5 hours", "1 घंटा 30 मिनट"],
+  ["2 hours", "2 घंटे"],
+  ["2.5 hours", "2 घंटे 30 मिनट"],
+  ["3 hours", "3 घंटे"],
+  ["3.5 hours", "3 घंटे 30 मिनट"],
+  ["4 hours", "4 घंटे"],
+  ["More than 4 hours", "4 घंटे से अधिक"]
+];
 
-"1 hour / 1 घंटा",
-
-"2 hours / 2 घंटे",
-
-"3 hours / 3 घंटे",
-
-"4 hours / 4 घंटे",
-
-"More than 4 hours / 4 घंटे से अधिक"
-
-].map((x)=>({
-
-name:name,
-
-value:x,
-
-label:x,
-
-required:true
-
+return durations.map(([en,hi])=>({
+  name:name,
+  value:en,
+  label:en+" / "+hi,
+  required:true
 }));
 
 }
@@ -4108,98 +4131,33 @@ render();
    SUBMIT
    ========================================================= */
 
+async function submitForm(){
 
-async function submitForm() {
 
-  // Collect answers from the final questionnaire page
-  collect();
+document.getElementById("nav")
+.style.display="none";
 
-  const nav = document.getElementById("nav");
-  const app = document.getElementById("app");
 
-  nav.style.display = "none";
+document.getElementById("app")
+.innerHTML=`
 
-  app.innerHTML = `
-    <div class="success">
-      <h1>Submitting... / जमा किया जा रहा है...</h1>
-      <p>Please wait.</p>
-    </div>
-  `;
+<div class="success">
 
-  // Generate timestamp
-  const now = new Date();
+<h1>
 
-  const timestamp =
-    String(now.getDate()).padStart(2, "0") + "-" +
-    ["Jan","Feb","Mar","Apr","May","Jun",
-     "Jul","Aug","Sep","Oct","Nov","Dec"][now.getMonth()] +
-    "-" + now.getFullYear() + " " +
-    now.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    });
+Submitting… / जमा किया जा रहा है…
 
-  data.submittedAt = timestamp;
+</h1>
 
-  try {
+<p>
 
-    await fetch(SCRIPT_URL, {
+Please wait.
 
-      method: "POST",
+</p>
 
-      mode: "no-cors",
+</div>
 
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-
-      body: JSON.stringify(data)
-
-    });
-
-    app.innerHTML = `
-      <div class="success">
-
-        <h1>Submission request sent / अनुरोध भेज दिया गया है</h1>
-
-        <p>
-          Your response has been sent to Google Sheets.
-          Please verify that it appears in the Responses sheet.
-        </p>
-
-        <p>
-          कृपया Google Sheets में अपनी प्रतिक्रिया दर्ज
-          होने की पुष्टि करें।
-        </p>
-
-      </div>
-    `;
-
-  }
-
-  catch (error) {
-
-    console.error("Submission error:", error);
-
-    nav.style.display = "flex";
-
-    app.innerHTML = `
-      <div class="success">
-
-        <h1>Submission failed / जमा नहीं हुआ</h1>
-
-        <p>
-          Please check your internet connection
-          and try again.
-        </p>
-
-      </div>
-    `;
-
-  }
-
-}
+`;
 
 
 /* =========================================================
